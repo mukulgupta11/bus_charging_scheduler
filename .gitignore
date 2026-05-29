@@ -4,6 +4,5 @@ __pycache__/
 .streamlit/secrets.toml
 .venv/
 venv/
-artifacts/
 *.log
 .DS_Store

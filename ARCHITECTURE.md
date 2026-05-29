@@ -1,4 +1,4 @@
-# 📐 Architecture — Bus Charging Scheduler
+# Architecture — Bus Charging Scheduler
 
 > Deep-dive into every component, data model, algorithm, and design decision.
 
@@ -38,31 +38,31 @@ The Bus Charging Scheduler is a **constraint-aware search engine** that assigns 
 
 ```mermaid
 graph TB
-    subgraph SYSTEM["🔧 Bus Charging Scheduler"]
+    subgraph SYSTEM["Bus Charging Scheduler"]
         direction TB
         subgraph DATA["Data Layer"]
-            JSON["📄 Scenario JSON"]
-            PARSE["📥 scenario_io.py"]
-            MODELS["📦 models.py"]
+            JSON["Scenario JSON"]
+            PARSE["scenario_io.py"]
+            MODELS["models.py"]
         end
 
         subgraph CORE["Scheduling Core"]
-            ROUTE["🗺️ RouteModel"]
-            PLANGEN["🔍 Candidate Plan Generator"]
-            ASSIGN["📋 Initial Assignment"]
-            SIMENG["⚡ Event Simulation"]
-            SEARCH["🔄 Local Search"]
+            ROUTE["RouteModel"]
+            PLANGEN["Candidate Plan Generator"]
+            ASSIGN["Initial Assignment"]
+            SIMENG["Event Simulation"]
+            SEARCH["Local Search"]
         end
 
         subgraph EVAL["Evaluation Layer"]
-            RULES["📊 Objective Rules"]
-            VALIDATOR["✅ Hard-Rule Validator"]
+            RULES["Objective Rules"]
+            VALIDATOR["Hard-Rule Validator"]
         end
 
         subgraph UI["Presentation Layer"]
-            STREAMLIT["🖥️ Streamlit Dashboard"]
-            TABS["📑 4 Interactive Tabs"]
-            SIDEBAR["🎚️ Weight Controls"]
+            STREAMLIT["Streamlit Dashboard"]
+            TABS["4 Interactive Tabs"]
+            SIDEBAR["Weight Controls"]
         end
     end
 
@@ -87,12 +87,12 @@ graph TB
 
 ```mermaid
 sequenceDiagram
-    participant User as 👤 User
-    participant UI as 🖥️ Streamlit
-    participant IO as 📥 scenario_io
-    participant Engine as ⚙️ WeightedScheduler
-    participant Rules as 📊 Rules
-    participant Validator as ✅ Validator
+    participant User as User
+    participant UI as Streamlit
+    participant IO as scenario_io
+    participant Engine as WeightedScheduler
+    participant Rules as Rules
+    participant Validator as Validator
 
     User->>UI: Select scenario + weights
     UI->>IO: load_raw_scenario(path)
@@ -303,10 +303,10 @@ classDiagram
 
 | Function | Description |
 |---|---|
-| `load_raw_scenario(path)` | Read JSON file → raw dict |
-| `parse_scenario(raw)` | Raw dict → `Scenario` dataclass |
+| `load_raw_scenario(path)` | Read JSON file -> raw dict |
+| `parse_scenario(raw)` | Raw dict -> `Scenario` dataclass |
 | `load_scenario(path)` | Combined load + parse |
-| `load_scenarios(directory)` | Glob `*.json` in folder → list of `(Path, Scenario)` |
+| `load_scenarios(directory)` | Glob `*.json` in folder -> list of `(Path, Scenario)` |
 | `with_weight_overrides(scenario, weights)` | Return new `Scenario` with replaced weights (immutable) |
 | `scenario_names(scenarios)` | Build `{name: path}` lookup |
 
@@ -335,7 +335,7 @@ classDiagram
 ```mermaid
 graph TD
     subgraph PROTOCOL["ObjectiveRule Protocol"]
-        P["name: str<br/>score(scenario, result) → float"]
+        P["name: str<br/>score(scenario, result) -> float"]
     end
 
     subgraph RULES["Registered Rules"]
@@ -428,7 +428,7 @@ graph TD
 | `travel_minutes(from, to)` | Ceiling of `distance / speed` in minutes |
 | `direction(origin, dest)` | `+1` (forward) or `-1` (reverse) |
 | `charging_stations_between(origin, dest)` | Ordered list of chargeable stations between two nodes |
-| `leg_distances(origin, plan, dest)` | Distance of each leg: origin → plan[0] → plan[1] → ... → dest |
+| `leg_distances(origin, plan, dest)` | Distance of each leg: origin -> plan[0] -> plan[1] -> ... -> dest |
 
 ---
 
@@ -438,19 +438,19 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph DASHBOARD["🖥️ Streamlit Dashboard"]
+    subgraph DASHBOARD["Streamlit Dashboard"]
         HEADER["Title + Scenario Selector"]
         METRICS["5 Metric Cards<br/><i>Buses · Charges · Max Wait · Latest Arrival · Objective</i>"]
         STATUS["Hard-Rule Status Badge"]
 
         subgraph TABS["4 Tabs"]
-            T1["📋 Scenario Input<br/><i>Departures · Route · Weights · Raw JSON</i>"]
-            T2["🚌 Per-bus Timetable<br/><i>Summary · Timeline · Charge Details</i>"]
-            T3["🔌 Per-station Order<br/><i>Station sub-tabs · Charger schedules</i>"]
-            T4["🔍 Audit<br/><i>Validations · Objective Breakdown · Candidates</i>"]
+            T1["Scenario Input<br/><i>Departures · Route · Weights · Raw JSON</i>"]
+            T2["Per-bus Timetable<br/><i>Summary · Timeline · Charge Details</i>"]
+            T3["Per-station Order<br/><i>Station sub-tabs · Charger schedules</i>"]
+            T4["Audit<br/><i>Validations · Objective Breakdown · Candidates</i>"]
         end
 
-        SIDEBAR["🎚️ Sidebar<br/><i>Weight toggle + sliders</i>"]
+        SIDEBAR["Sidebar<br/><i>Weight toggle + sliders</i>"]
     end
 
     HEADER --> METRICS --> STATUS --> TABS
@@ -476,17 +476,17 @@ For each bus, enumerate all feasible subsets of charging stations along its rout
 graph TD
     START["Origin: Bengaluru<br/><i>Battery: 240 km</i>"]
 
-    START -->|"100 km ✅"| A["Stop at A<br/><i>Recharge → 240 km</i>"]
-    START -->|"220 km ✅"| B["Stop at B<br/><i>Recharge → 240 km</i>"]
+    START -->|"100 km OK"| A["Stop at A<br/><i>Recharge -> 240 km</i>"]
+    START -->|"220 km OK"| B["Stop at B<br/><i>Recharge -> 240 km</i>"]
 
-    A -->|"120 km ✅"| AB["Stop at B<br/><i>Recharge → 240 km</i>"]
-    A -->|"220 km ✅"| AC["Stop at C<br/><i>Recharge → 240 km</i>"]
+    A -->|"120 km OK"| AB["Stop at B<br/><i>Recharge -> 240 km</i>"]
+    A -->|"220 km OK"| AC["Stop at C<br/><i>Recharge -> 240 km</i>"]
 
-    AB -->|"100 km ✅"| ABC["Stop at C"]
-    AB -->|"220 km ✅"| ABD["Stop at D"]
+    AB -->|"100 km OK"| ABC["Stop at C"]
+    AB -->|"220 km OK"| ABD["Stop at D"]
 
-    B -->|"100 km ✅"| BC["Stop at C"]
-    B -->|"220 km ✅"| BD["Stop at D"]
+    B -->|"100 km OK"| BC["Stop at C"]
+    B -->|"220 km OK"| BD["Stop at D"]
 
     style START fill:#1E40AF,color:#fff
     style A fill:#EA580C,color:#fff
@@ -543,8 +543,8 @@ For each pass in local_search_passes:
     Sort buses by total_wait (worst first)
     For each bus:
         Try every alternative candidate plan
-        If any plan lowers the global objective → swap
-    If no improvement in this pass → stop early
+        If any plan lowers the global objective -> swap
+    If no improvement in this pass -> stop early
 ```
 
 ---
@@ -553,7 +553,7 @@ For each pass in local_search_passes:
 
 ```mermaid
 graph TD
-    ROOT["📄 Scenario JSON"]
+    ROOT["Scenario JSON"]
     ROOT --> ID["id: string"]
     ROOT --> NAME["name: string"]
     ROOT --> DESC["description: string"]
@@ -566,12 +566,12 @@ graph TD
     ROUTE --> NODES["nodes[]"]
     ROUTE --> SEGS["segments[]"]
 
-    NODES --> NODE_F["id · name · kind · chargers<br/><i>+ any extra fields → attributes</i>"]
-    SEGS --> SEG_F["from · to · distance_km<br/><i>+ any extra fields → attributes</i>"]
+    NODES --> NODE_F["id · name · kind · chargers<br/><i>+ any extra fields -> attributes</i>"]
+    SEGS --> SEG_F["from · to · distance_km<br/><i>+ any extra fields -> attributes</i>"]
     VEHICLE --> VEH_F["battery_range_km<br/>charge_minutes<br/>speed_kmph"]
     WEIGHTS --> W_F["rule_name: weight_value<br/><i>e.g. individual: 1.0</i>"]
     SCHED --> S_F["candidate_plan_limit: 24<br/>local_search_passes: 3"]
-    BUSES --> BUS_F["id · operator · origin<br/>destination · departure<br/><i>+ any extra fields → attributes</i>"]
+    BUSES --> BUS_F["id · operator · origin<br/>destination · departure<br/><i>+ any extra fields -> attributes</i>"]
 
     style ROOT fill:#3B82F6,color:#fff,stroke:#2563EB
     style ROUTE fill:#06B6D4,color:#fff,stroke:#0891B2
@@ -661,9 +661,9 @@ Weights from `scenario.weights` are used in **three** places — not just scorin
 graph LR
     W["scenario.weights<br/><i>individual · operator · overall</i>"]
 
-    W --> IA["1️⃣ Initial Assignment<br/><i>Plan selection heuristic</i>"]
-    W --> SD["2️⃣ Station Dispatch<br/><i>Queue priority ordering</i>"]
-    W --> OE["3️⃣ Objective Evaluation<br/><i>Final score computation</i>"]
+    W --> IA["1. Initial Assignment<br/><i>Plan selection heuristic</i>"]
+    W --> SD["2. Station Dispatch<br/><i>Queue priority ordering</i>"]
+    W --> OE["3. Objective Evaluation<br/><i>Final score computation</i>"]
 
     style W fill:#7C3AED,color:#fff,stroke:#6D28D9
     style IA fill:#DBEAFE,stroke:#3B82F6,color:#1E3A5F
@@ -681,11 +681,11 @@ This means **changing a weight changes behavior at every level** — not just th
 
 ```mermaid
 graph LR
-    V["validate()"] --> R1["🔋 Battery Range<br/><i>No leg > battery_range_km</i>"]
-    V --> R2["🔌 Charger Exclusivity<br/><i>No overlapping sessions</i>"]
-    V --> R3["⏱️ Charge Duration<br/><i>Each charge = charge_minutes</i>"]
-    V --> R4["🏁 Trip Completion<br/><i>Every bus reaches destination</i>"]
-    V --> R5["📏 Route Order<br/><i>Stations visited in order</i>"]
+    V["validate()"] --> R1["Battery Range<br/><i>No leg > battery_range_km</i>"]
+    V --> R2["Charger Exclusivity<br/><i>No overlapping sessions</i>"]
+    V --> R3["Charge Duration<br/><i>Each charge = charge_minutes</i>"]
+    V --> R4["Trip Completion<br/><i>Every bus reaches destination</i>"]
+    V --> R5["Route Order<br/><i>Stations visited in order</i>"]
 
     style V fill:#7C3AED,color:#fff,stroke:#6D28D9
     style R1 fill:#D1FAE5,stroke:#10B981,color:#064E3B
@@ -703,14 +703,14 @@ graph LR
 
 ```mermaid
 sequenceDiagram
-    participant Dev as 👩‍💻 Developer
+    participant Dev as Developer
     participant Rules as rules.py
     participant JSON as scenario.json
     participant Engine as scheduler.py
     participant UI as app.py
 
     Dev->>Rules: 1. Create PriorityWaitRule class
-    Note over Rules: name = "priority"<br/>score(scenario, result) → float
+    Note over Rules: name = "priority"<br/>score(scenario, result) -> float
     Dev->>Rules: 2. Add to DEFAULT_OBJECTIVE_RULES
     Dev->>JSON: 3. Add "priority": 3.0 to weights
 
@@ -720,7 +720,7 @@ sequenceDiagram
 
 ### Rule Protocol
 
-Any object with `name: str` and `score(scenario, result) → float` qualifies:
+Any object with `name: str` and `score(scenario, result) -> float` qualifies:
 
 ```python
 class ObjectiveRule(Protocol):
@@ -785,4 +785,3 @@ Every change below requires **zero code modifications** — only scenario JSON e
 *For usage instructions, setup, and deployment — see [README.md](README.md)*
 
 </div>
-

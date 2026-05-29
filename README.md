@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ Bus Charging Scheduler
+# Bus Charging Scheduler
 
 ### Intelligent Charging Orchestration for Electric Bus Fleets
 
@@ -19,7 +19,7 @@
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Problem Statement](#-problem-statement)
 - [Key Features](#-key-features)
@@ -38,43 +38,43 @@
 
 ---
 
-## 🎯 Problem Statement
+## Problem Statement
 
 Multiple electric bus operators share a linear route (e.g. **Bengaluru ↔ Kochi, 540 km**) with limited charging stations along the way. Each station has a fixed number of chargers, and buses from different operators travel in both directions with overlapping schedules.
 
 **The challenge:** Assign each bus a charging plan — which stations to stop at and in what order — so that:
 
-- ✅ No bus runs out of battery between stops
-- ✅ No two buses use the same charger at the same time
-- ✅ Wait times are minimized fairly across all buses and operators
-- ✅ The overall network finishes as early as possible
+- No bus runs out of battery between stops
+- No two buses use the same charger at the same time
+- Wait times are minimized fairly across all buses and operators
+- The overall network finishes as early as possible
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 | Feature | Description |
 |---|---|
-| 🔍 **Constraint-Aware Search** | Enumerates all feasible charging plans per bus via DFS, then optimizes assignments using local search |
-| ⚖️ **Multi-Objective Scoring** | Three pluggable soft rules (individual, operator, overall) with configurable weights |
-| 🏭 **Event-Driven Simulation** | Min-heap event queue simulates shared charger contention with weighted dispatch priority |
-| 📊 **Interactive Dashboard** | Streamlit UI with scenario selector, weight sliders, per-bus timelines, and per-station schedules |
-| 🧩 **Fully Data-Driven** | Add buses, stations, operators, or change routes — zero code changes required |
-| 🔌 **Extensible Rule Engine** | Add a new scoring rule with one class + one JSON key — the engine auto-discovers it |
-| ✅ **Hard-Rule Validation** | Post-schedule validation checks battery range, charger exclusivity, charge duration, trip completion, and route order |
+| **Constraint-Aware Search** | Enumerates all feasible charging plans per bus via DFS, then optimizes assignments using local search |
+| **Multi-Objective Scoring** | Three pluggable soft rules (individual, operator, overall) with configurable weights |
+| **Event-Driven Simulation** | Min-heap event queue simulates shared charger contention with weighted dispatch priority |
+| **Interactive Dashboard** | Streamlit UI with scenario selector, weight sliders, per-bus timelines, and per-station schedules |
+| **Fully Data-Driven** | Add buses, stations, operators, or change routes — zero code changes required |
+| **Extensible Rule Engine** | Add a new scoring rule with one class + one JSON key — the engine auto-discovers it |
+| **Hard-Rule Validation** | Post-schedule validation checks battery range, charger exclusivity, charge duration, trip completion, and route order |
 
 ---
 
-## 🏗 Architecture at a Glance
+## Architecture at a Glance
 
 ```mermaid
 flowchart TD
-    subgraph INPUT["📥 Input Layer"]
+    subgraph INPUT["Input Layer"]
         JSON["Scenario JSON Files"]
         IO["scenario_io.py<br/><i>Parser & Loader</i>"]
     end
 
-    subgraph ENGINE["⚙️ Scheduling Engine"]
+    subgraph ENGINE["Scheduling Engine"]
         ROUTE["RouteModel<br/><i>Distance & travel-time graph</i>"]
         CAND["Candidate Plan Generator<br/><i>DFS over feasible charge plans</i>"]
         INIT["Initial Assignment<br/><i>Load-balanced heuristic</i>"]
@@ -82,12 +82,12 @@ flowchart TD
         LOCAL["Local Search<br/><i>Iterative plan improvement</i>"]
     end
 
-    subgraph SCORING["📊 Scoring Layer"]
+    subgraph SCORING["Scoring Layer"]
         RULES["Objective Rules<br/><i>individual · operator · overall</i>"]
         VALID["Hard-Rule Validator<br/><i>5 constraint checks</i>"]
     end
 
-    subgraph OUTPUT["📤 Output Layer"]
+    subgraph OUTPUT["Output Layer"]
         RESULT["ScheduleResult<br/><i>Bus & station schedules</i>"]
         UI["Streamlit Dashboard<br/><i>4-tab interactive UI</i>"]
     end
@@ -104,11 +104,11 @@ flowchart TD
     style OUTPUT fill:#F3E8FF,stroke:#8B5CF6,color:#4C1D95
 ```
 
-> 📖 See [ARCHITECTURE.md](ARCHITECTURE.md) for a deep-dive into every component, data model, algorithm, and design decision.
+> See [ARCHITECTURE.md](ARCHITECTURE.md) for a deep-dive into every component, data model, algorithm, and design decision.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 bus-charging-scheduler/
@@ -117,7 +117,7 @@ bus-charging-scheduler/
 ├── requirements.txt                # Python dependencies
 ├── .gitignore                      # Git exclusions
 │
-├── bus_scheduler/                  # 🧠 Core scheduling engine package
+├── bus_scheduler/                  # Core scheduling engine package
 │   ├── __init__.py                 #    Public API exports
 │   ├── models.py                   #    Immutable dataclasses (11 models)
 │   ├── scheduler.py                #    WeightedScheduler — plan gen, simulation, local search (650 lines)
@@ -126,7 +126,7 @@ bus-charging-scheduler/
 │   └── formatting.py               #    Clock & duration display utilities
 │
 ├── data/
-│   └── scenarios/                  # 📂 5 pre-built scenario JSON files
+│   └── scenarios/                  # 5 pre-built scenario JSON files
 │       ├── scenario_1_even_spacing.json
 │       ├── scenario_2_bunched_start.json
 │       ├── scenario_3_asymmetric_load.json
@@ -134,27 +134,27 @@ bus-charging-scheduler/
 │       └── scenario_5_worst_case_convergence.json
 │
 ├── tests/
-│   └── test_scheduler.py           # 🧪 Unit tests (3 test cases with sub-tests)
+│   └── test_scheduler.py           # Unit tests (3 test cases with sub-tests)
 │
 ├── artifacts/
-│   └── scheduler-app.png           # 📸 App screenshot
+│   └── scheduler-app.png           # App screenshot
 │
 ├── .streamlit/
-│   └── config.toml                 # 🎨 Theme configuration (light, orange accent)
+│   └── config.toml                 # Theme configuration (light, orange accent)
 │
-├── ARCHITECTURE.md                 # 📐 Detailed design & extension documentation
-└── README.md                       # 📖 This file
+├── ARCHITECTURE.md                 # Detailed design & extension documentation
+└── README.md                       # This file
 ```
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ```mermaid
 graph LR
-    A["🐍 Python 3.11+"] --> B["📊 Streamlit ≥1.58"]
-    A --> C["🐼 Pandas ≥2.0"]
-    A --> D["📦 stdlib only<br/><i>heapq · math · json<br/>dataclasses · collections</i>"]
+    A["Python 3.11+"] --> B["Streamlit >=1.58"]
+    A --> C["Pandas >=2.0"]
+    A --> D["stdlib only<br/><i>heapq · math · json<br/>dataclasses · collections</i>"]
 
     style A fill:#3776AB,color:#fff,stroke:#2B5F8A
     style B fill:#FF4B4B,color:#fff,stroke:#CC3C3C
@@ -165,8 +165,8 @@ graph LR
 | Layer | Technology | Purpose |
 |---|---|---|
 | **Language** | Python 3.11+ | Type hints, dataclasses, structural pattern matching |
-| **UI Framework** | Streamlit ≥1.58 | Interactive dashboard with tabs, metrics, dataframes, sidebars |
-| **Data Processing** | Pandas ≥2.0 | DataFrame rendering for bus/station schedule tables |
+| **UI Framework** | Streamlit >=1.58 | Interactive dashboard with tabs, metrics, dataframes, sidebars |
+| **Data Processing** | Pandas >=2.0 | DataFrame rendering for bus/station schedule tables |
 | **Scheduling Core** | Python stdlib | `heapq` (event sim), `dataclasses` (models), `collections` (counters) |
 | **Data Storage** | JSON files | Scenario definitions — no database required |
 | **Testing** | `unittest` | Built-in test runner with subtests |
@@ -175,7 +175,7 @@ graph LR
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -211,18 +211,18 @@ python -m unittest discover -s tests
 
 ---
 
-## ⚙️ How It Works
+## How It Works
 
 The scheduling algorithm runs in **6 stages**, each cleanly separated:
 
 ```mermaid
 flowchart LR
-    A["1️⃣ Parse\nScenario"] --> B["2️⃣ Build\nRoute Model"]
-    B --> C["3️⃣ Generate\nCandidate Plans"]
-    C --> D["4️⃣ Initial\nAssignment"]
-    D --> E["5️⃣ Event\nSimulation"]
-    E --> F["6️⃣ Local\nSearch"]
-    F --> G["✅ Validate\n& Score"]
+    A["Parse\nScenario"] --> B["Build\nRoute Model"]
+    B --> C["Generate\nCandidate Plans"]
+    C --> D["Initial\nAssignment"]
+    D --> E["Event\nSimulation"]
+    E --> F["Local\nSearch"]
+    F --> G["Validate\n& Score"]
 
     style A fill:#DBEAFE,stroke:#3B82F6,color:#1E3A5F
     style B fill:#DBEAFE,stroke:#3B82F6,color:#1E3A5F
@@ -235,7 +235,7 @@ flowchart LR
 
 | Stage | What Happens |
 |---|---|
-| **1. Parse Scenario** | Load JSON → build immutable `Scenario` with nodes, segments, buses, vehicle config, weights |
+| **1. Parse Scenario** | Load JSON -> build immutable `Scenario` with nodes, segments, buses, vehicle config, weights |
 | **2. Build Route Model** | Compute cumulative distances, direction detection, travel-time calculations |
 | **3. Generate Candidate Plans** | DFS over charging stations reachable within battery range; sort by leg-balance heuristic; cap at `candidate_plan_limit` |
 | **4. Initial Assignment** | Greedily assign plans to buses considering station load, time-bucket congestion, and operator balance |
@@ -244,7 +244,7 @@ flowchart LR
 
 ---
 
-## 📄 Scenario Data Format
+## Scenario Data Format
 
 Each scenario is a self-contained JSON file. Here's the structure:
 
@@ -282,11 +282,11 @@ Each scenario is a self-contained JSON file. Here's the structure:
 
 ```mermaid
 graph LR
-    BLR["🏙️ Bengaluru<br/><i>Terminal</i>"] -- "100 km" --> A["⚡ Station A<br/><i>1 charger</i>"]
-    A -- "120 km" --> B["⚡ Station B<br/><i>1 charger</i>"]
-    B -- "100 km" --> C["⚡ Station C<br/><i>1 charger</i>"]
-    C -- "120 km" --> D["⚡ Station D<br/><i>1 charger</i>"]
-    D -- "100 km" --> KCH["🏙️ Kochi<br/><i>Terminal</i>"]
+    BLR["Bengaluru<br/><i>Terminal</i>"] -- "100 km" --> A["Station A<br/><i>1 charger</i>"]
+    A -- "120 km" --> B["Station B<br/><i>1 charger</i>"]
+    B -- "100 km" --> C["Station C<br/><i>1 charger</i>"]
+    C -- "120 km" --> D["Station D<br/><i>1 charger</i>"]
+    D -- "100 km" --> KCH["Kochi<br/><i>Terminal</i>"]
 
     style BLR fill:#1E40AF,color:#fff,stroke:#1E3A8A
     style A fill:#EA580C,color:#fff,stroke:#C2410C
@@ -296,7 +296,7 @@ graph LR
     style KCH fill:#1E40AF,color:#fff,stroke:#1E3A8A
 ```
 
-> **Total route distance:** 540 km &nbsp;|&nbsp; **Battery range:** 240 km &nbsp;|&nbsp; **⇒ Each bus needs 2+ charging stops**
+> **Total route distance:** 540 km &nbsp;|&nbsp; **Battery range:** 240 km &nbsp;|&nbsp; **=> Each bus needs 2+ charging stops**
 
 ### Shipped Scenarios
 
@@ -305,12 +305,12 @@ graph LR
 | 1 | Even Spacing | 20 | Baseline — 15-min intervals, balanced directions |
 | 2 | Bunched Start | 20 | 8-min intervals — heavy contention at inner stations |
 | 3 | Asymmetric Load | 14 | Unbalanced direction split (10 vs 4) |
-| 4 | Operator Heavy | 20 | High operator-fairness weight (2.0×) |
+| 4 | Operator Heavy | 20 | High operator-fairness weight (2.0x) |
 | 5 | Worst Case Convergence | 20 | All buses within 72-min window — maximum collision |
 
 ---
 
-## 📊 Scoring & Objective Function
+## Scoring & Objective Function
 
 The objective function is a **weighted sum of three pluggable soft rules**:
 
@@ -320,9 +320,9 @@ Objective = Σ (weight_i × raw_score_i)
 
 ```mermaid
 graph TD
-    OBJ["🎯 Objective Score"] --> IND["👤 Individual Wait Rule<br/><i>weight × (max_wait + 0.12 × convex_pressure)</i>"]
-    OBJ --> OPR["🏢 Operator Smoothness Rule<br/><i>weight × (avg + 0.5×max + 0.5×stdev + imbalance)</i>"]
-    OBJ --> NET["🌐 Overall Network Rule<br/><i>weight × (total_wait + 0.8×charge_time + 0.05×span)</i>"]
+    OBJ["Objective Score"] --> IND["Individual Wait Rule<br/><i>weight × (max_wait + 0.12 × convex_pressure)</i>"]
+    OBJ --> OPR["Operator Smoothness Rule<br/><i>weight × (avg + 0.5×max + 0.5×stdev + imbalance)</i>"]
+    OBJ --> NET["Overall Network Rule<br/><i>weight × (total_wait + 0.8×charge_time + 0.05×span)</i>"]
 
     style OBJ fill:#7C3AED,color:#fff,stroke:#6D28D9
     style IND fill:#3B82F6,color:#fff,stroke:#2563EB
@@ -340,7 +340,7 @@ graph TD
 
 ---
 
-## 🛡 Hard Constraints
+## Hard Constraints
 
 After every schedule, 5 hard rules are validated:
 
@@ -354,7 +354,7 @@ After every schedule, 5 hard rules are validated:
 
 ---
 
-## 🖥 Interactive Dashboard
+## Interactive Dashboard
 
 The Streamlit dashboard has **4 tabs**:
 
@@ -373,7 +373,7 @@ The Streamlit dashboard has **4 tabs**:
 
 ---
 
-## 🔌 Extending the System
+## Extending the System
 
 ### Add a New Scenario
 
@@ -403,7 +403,7 @@ DEFAULT_OBJECTIVE_RULES = (
     IndividualWaitRule(),
     OperatorSmoothnessRule(),
     OverallNetworkRule(),
-    PriorityWaitRule(),        # ← new
+    PriorityWaitRule(),        # <- new
 )
 ```
 
@@ -428,13 +428,13 @@ DEFAULT_OBJECTIVE_RULES = (
 
 ---
 
-## 🧪 Testing
+## Testing
 
 The test suite covers three critical dimensions:
 
 | Test | What It Verifies |
 |---|---|
-| `test_all_shipped_scenarios_pass_hard_rules` | All 5 scenarios pass every hard constraint; all buses arrive; all plans have ≥2 charge stops |
+| `test_all_shipped_scenarios_pass_hard_rules` | All 5 scenarios pass every hard constraint; all buses arrive; all plans have >=2 charge stops |
 | `test_weight_change_can_change_dispatch_order` | Changing operator weight produces a measurably different station schedule |
 | `test_more_chargers_is_data_only` | Doubling chargers at station B works without code changes and utilizes charger #2 |
 
@@ -448,7 +448,7 @@ python -m unittest discover -s tests -v
 
 ---
 
-## ☁️ Deployment
+## Deployment
 
 ### Streamlit Community Cloud
 
@@ -471,9 +471,8 @@ CMD ["streamlit", "run", "app.py", "--server.port=8501"]
 
 <div align="center">
 
-**Built with ❤️ using Python & Streamlit**
+**Built with Python & Streamlit**
 
 *A take-home assessment for electric bus fleet scheduling*
 
 </div>
-
