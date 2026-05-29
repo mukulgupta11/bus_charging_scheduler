@@ -1,4 +1,4 @@
-<![CDATA[# 📐 Architecture — Bus Charging Scheduler
+# 📐 Architecture — Bus Charging Scheduler
 
 > Deep-dive into every component, data model, algorithm, and design decision.
 
@@ -785,4 +785,4 @@ Every change below requires **zero code modifications** — only scenario JSON e
 *For usage instructions, setup, and deployment — see [README.md](README.md)*
 
 </div>
-]]>
+

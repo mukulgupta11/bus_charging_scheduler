@@ -1,4 +1,4 @@
-<![CDATA[<div align="center">
+<div align="center">
 
 # ⚡ Bus Charging Scheduler
 
@@ -476,4 +476,4 @@ CMD ["streamlit", "run", "app.py", "--server.port=8501"]
 *A take-home assessment for electric bus fleet scheduling*
 
 </div>
-]]>
+
